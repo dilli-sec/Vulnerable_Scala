@@ -1,0 +1,10 @@
+import java.io.File
+import scala.io.Source
+
+object PathTraversalExample {
+  def readUserFile(filename: String): String = {
+    // VULNERABLE: concatenating user-controlled filename
+    val file = new File(s"/app/data/$filename")
+    Source.fromFile(file).mkString
+  }
+}
