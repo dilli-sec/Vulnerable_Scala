@@ -1,0 +1,10 @@
+import play.api.mvc._
+import javax.inject._
+
+@Singleton
+class XssController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+  def echo(name: String) = Action {
+    // VULNERABLE: raw user input included in HTML response without escaping
+    Ok(s"<html><body>Hello, $name</body></html>").as(HTML)
+  }
+}
