@@ -1,0 +1,15 @@
+import java.sql.DriverManager
+
+object SqlInjectionExample {
+  def findUserByName(name: String): Unit = {
+    val conn = DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+    val stmt = conn.createStatement()
+    // VULNERABLE: string concatenation into SQL
+    val sql = s"SELECT id, username FROM users WHERE username = '$name'"
+    val rs = stmt.executeQuery(sql)
+    while (rs.next()) {
+      println(rs.getString("username"))
+    }
+    rs.close(); stmt.close(); conn.close()
+  }
+}
