@@ -1,0 +1,10 @@
+import scala.sys.process._
+
+object CommandInjectionExample {
+  def listFiles(path: String): Unit = {
+    // VULNERABLE: untrusted user input used in shell command
+    val cmd = s"ls -la $path"
+    val output = cmd.!!
+    println(output)
+  }
+}
